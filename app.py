@@ -15,7 +15,7 @@ categorical_cols = joblib.load("categorical_cols.pkl")
 feature_columns = joblib.load("feature_columns.pkl")
 
 st.set_page_config(page_title="CTC Prediction", page_icon="💼")
-st.title("💼 Expected CTC Prediction App")
+st.title("Expected CTC Prediction App")
 
 st.write("Enter candidate details to predict Expected CTC")
 
