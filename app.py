@@ -3,9 +3,9 @@ import numpy as np
 import pandas as pd
 import joblib
 
-# =====================================
+
 # LOAD MODEL & PREPROCESSORS
-# =====================================
+
 model = joblib.load("xgb_model.pkl")
 num_imputer = joblib.load("num_imputer.pkl")
 cat_imputer = joblib.load("cat_imputer.pkl")
@@ -19,9 +19,8 @@ st.title("Expected CTC Prediction App")
 
 st.write("Enter candidate details to predict Expected CTC")
 
-# =====================================
 # USER INPUTS
-# =====================================
+
 user_input = {}
 
 st.subheader("Experience Details")
@@ -69,9 +68,8 @@ user_input["Industry"] = st.selectbox(
     "Industry", label_encoders["Industry"].classes_
 )
 
-# =====================================
 # PREDICTION
-# =====================================
+
 if st.button("Predict Expected CTC"):
 
     input_df = pd.DataFrame(columns=feature_columns)
