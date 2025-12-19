@@ -10,7 +10,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from xgboost import XGBRegressor
 
-# 1. LOAD DATA
+# 1. LOADING DATA
 
 df = pd.read_csv("expected_ctc.csv")
 print("Dataset shape:", df.shape)
@@ -19,7 +19,7 @@ print("Dataset shape:", df.shape)
 
 target_col = "Expected_CTC"
 
-# 3. DROP USELESS COLUMNS (CRITICAL FIX)
+# 3. DROPING USELESS COLUMNS 
 
 drop_cols = [
     "IDX",
@@ -38,7 +38,7 @@ drop_cols = [
 
 df = df.drop(columns=[c for c in drop_cols if c in df.columns])
 
-# 4. SPLIT FEATURES / TARGET
+# 4. SPLITING FEATURES / TARGET
 
 X = df.drop(columns=[target_col])
 y = df[target_col]
@@ -52,7 +52,7 @@ print("Categorical columns:", categorical_cols)
 print("Numerical columns:", numerical_cols)
 
 
-# 6. HANDLE MISSING VALUES
+# 6. HANDLEING MISSING VALUES
 
 num_imputer = SimpleImputer(strategy="median")
 cat_imputer = SimpleImputer(strategy="most_frequent")
@@ -60,7 +60,7 @@ cat_imputer = SimpleImputer(strategy="most_frequent")
 X[numerical_cols] = num_imputer.fit_transform(X[numerical_cols])
 X[categorical_cols] = cat_imputer.fit_transform(X[categorical_cols])
 
-# 7. ENCODE CATEGORICAL VARIABLES
+# 7. ENCODEING CATEGORICAL VARIABLES
 
 label_encoders = {}
 
@@ -77,7 +77,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 )
 
 
-# 9. TRAIN XGBOOST MODEL
+# 9. TRAINING XGBOOST MODEL
 
 model = XGBRegressor(
     n_estimators=300,
@@ -101,7 +101,7 @@ print("MAE :", mean_absolute_error(y_test, y_pred))
 print("RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
 print("R2  :", r2_score(y_test, y_pred))
 
-# 11. SAFE PREDICTION FUNCTION
+# 11. CTC PREDICTION FUNCTION
 
 def predict_expected_ctc(input_data: dict):
 
