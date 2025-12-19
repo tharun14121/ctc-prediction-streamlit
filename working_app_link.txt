@@ -1,1 +1,1 @@
-https://ctc-prediction-app-ecavgnnbsor5uimjdnbiui.streamlit.app
+https://ctc-prediction-app-kbpss3z2afh96smmy84nai.streamlit.app
