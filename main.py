@@ -69,16 +69,16 @@ for col in categorical_cols:
     X[col] = le.fit_transform(X[col])
     label_encoders[col] = le
 
-# =====================================
+
 # 8. TRAIN–TEST SPLIT
-# =====================================
+
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
 )
 
-# =====================================
+
 # 9. TRAIN XGBOOST MODEL
-# =====================================
+
 model = XGBRegressor(
     n_estimators=300,
     learning_rate=0.05,
@@ -91,9 +91,9 @@ model = XGBRegressor(
 
 model.fit(X_train, y_train)
 
-# =====================================
+
 # 10. EVALUATION
-# =====================================
+
 y_pred = model.predict(X_test)
 
 print("\n===== MODEL PERFORMANCE =====")
@@ -101,9 +101,8 @@ print("MAE :", mean_absolute_error(y_test, y_pred))
 print("RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
 print("R2  :", r2_score(y_test, y_pred))
 
-# =====================================
 # 11. SAFE PREDICTION FUNCTION
-# =====================================
+
 def predict_expected_ctc(input_data: dict):
 
     input_df = pd.DataFrame(columns=X.columns)
@@ -112,7 +111,7 @@ def predict_expected_ctc(input_data: dict):
         if key in input_df.columns:
             input_df.at[0, key] = value
 
-    # Ensure correct dtypes
+    # Ensure dtypes
     for col in numerical_cols:
         input_df[col] = pd.to_numeric(input_df[col], errors="coerce")
 
@@ -123,7 +122,7 @@ def predict_expected_ctc(input_data: dict):
     input_df[numerical_cols] = num_imputer.transform(input_df[numerical_cols])
     input_df[categorical_cols] = cat_imputer.transform(input_df[categorical_cols])
 
-    # Encode safely
+    # Encode 
     for col in categorical_cols:
         le = label_encoders[col]
         input_df[col] = input_df[col].apply(
@@ -133,9 +132,9 @@ def predict_expected_ctc(input_data: dict):
 
     return model.predict(input_df)[0]
 
-# =====================================
+
 # 12. SAMPLE PREDICTION
-# =====================================
+
 sample_candidate = {
     "Total_Experience": 5,
     "Total_Experience_in_field_applied": 3,
@@ -155,9 +154,9 @@ predicted_salary = predict_expected_ctc(sample_candidate)
 print("\n===== PREDICTED EXPECTED CTC =====")
 print("Predicted Expected CTC:", predicted_salary)
 
-# =====================================
+
 # 13. SAVE EVERYTHING
-# =====================================
+
 joblib.dump(model, "xgb_model.pkl")
 joblib.dump(num_imputer, "num_imputer.pkl")
 joblib.dump(cat_imputer, "cat_imputer.pkl")
